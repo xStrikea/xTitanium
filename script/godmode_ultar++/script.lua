@@ -12,10 +12,9 @@ local LocalPlayer = Players.LocalPlayer
 local ProtectionEnabled = true
 local KEY_TOGGLE = Enum.KeyCode.F6
 
--- 通知用函式
 local function notify(msg)
     StarterGui:SetCore("SendNotification", {
-        Title = "Godmode ULTRA+",
+        Title = "Godmode ULTRA++",
         Text = msg,
         Duration = 3
     })
