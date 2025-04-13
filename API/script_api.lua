@@ -3,9 +3,10 @@ local HttpService = game:GetService("HttpService")
 local FileAPI = {}
 FileAPI.baseURL = "https://api.github.com/repos/xStrikea/xTitanium/contents/script"
 
-function FileAPI.listContents()
+function FileAPI.listContents(folderURL)
+    folderURL = folderURL or FileAPI.baseURL
     local success, result = pcall(function()
-        return HttpService:GetAsync(FileAPI.baseURL)
+        return HttpService:GetAsync(folderURL)
     end)
 
     if success then
@@ -13,6 +14,13 @@ function FileAPI.listContents()
         local items = {}
         for _, item in ipairs(contents) do
             table.insert(items, {name = item.name, type = item.type, url = item.download_url or item.url})
+            if item.type == "dir" then
+                -- 遞歸檢索子文件夾
+                local subItems = FileAPI.listContents(item.url)
+                for _, subItem in ipairs(subItems) do
+                    table.insert(items, subItem)
+                end
+            end
         end
         return items
     else
