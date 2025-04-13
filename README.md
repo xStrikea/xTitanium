@@ -32,5 +32,11 @@ Check out our examples:
 [Here](/API/script_examples.lua)
 ---
 
+<div style="position: relative; padding: 30% 45%;">
+<iframe style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" src="https://xStrikea.github.io" frameborder="1" scrolling="yes" width="320" height="240"</iframe>
+</div>
+
+---
+
 # Number of visits
 ![Count](https://count.kjchmc.cn/get/@xTitanium-minecraft-id102938475765748201?theme=minecraft)
