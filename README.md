@@ -30,11 +30,6 @@ Our API is stored in the [API folder](/API/script_api.lua). You can copy it and 
 How to use:  
 Check out our examples:  
 [Here](/API/script_examples.lua)
----
-
-<div style="position: relative; padding: 30% 45%;">
-<iframe style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" src="https://xStrikea.github.io" frameborder="1" scrolling="yes" width="320" height="240"</iframe>
-</div>
 
 ---
 
