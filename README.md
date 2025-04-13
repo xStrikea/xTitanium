@@ -24,5 +24,13 @@ Contact me:
 
 ---
 
+# xTitanium API  
+Our API is stored in the [API folder](/API/script_api.lua). You can copy it and make it in your scripts, if you think my API script is missing something, you can edit or modify it, you will not violate the license content because of the MIT license.
+
+How to use:  
+Check out our examples:  
+[Here](/API/script_examples.lua)
+---
+
 # Number of visits
 ![:name](https://count.kjchmc.cn/get/@xTitanium-minecraft-id102938475765748201?theme=minecraft)
