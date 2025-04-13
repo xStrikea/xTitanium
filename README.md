@@ -33,4 +33,4 @@ Check out our examples:
 ---
 
 # Number of visits
-![:name](https://count.kjchmc.cn/get/@xTitanium-minecraft-id102938475765748201?theme=minecraft)
+![Count](https://count.kjchmc.cn/get/@xTitanium-minecraft-id102938475765748201?theme=minecraft)
