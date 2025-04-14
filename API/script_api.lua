@@ -5,7 +5,7 @@ FileAPI.baseURL = "https://api.github.com/repos/xStrikea/xTitanium/contents/scri
 
 local function loadEnv()
     local envVariables = {}
-    local envFile = io.open(".env", "r")
+    local envFile = io.open("../.env", "r")
 
     if not envFile then
         warn(".env files error")
@@ -25,7 +25,6 @@ end
 
 local env = loadEnv()
 local token = env and env.API_TOKEN
-
 function FileAPI.listContents(folderURL)
     folderURL = folderURL or FileAPI.baseURL
     local headers = {}
