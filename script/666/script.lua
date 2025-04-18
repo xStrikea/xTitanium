@@ -68,7 +68,7 @@ local function playBackgroundMusic()
 	local sound = Instance.new("Sound")
 	sound.SoundId = musicId
 	sound.Looped = true
-	sound.Volume = 100
+	sound.Volume = 0.2
 	sound.Name = "BackgroundMusic"
 	sound.Parent = workspace
 	sound:Play()
@@ -92,7 +92,7 @@ local function constantlyEnforceTextures()
 			end
 		end
 
-		for i = 1, #parts, 50 do
+		for i = 1, #parts, 100 do
 			for j = i, math.min(i + 49, #parts) do
 				local part = parts[j]
 				forceApplyTexture(part)
