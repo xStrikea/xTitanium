@@ -33,7 +33,7 @@ local function forceApplyTexture(part)
 	end
 
 	if replaced or not processed[part] then
-		print("已處理零件: " .. part:GetFullName())
+		print("" .. part:GetFullName())
 	end
 
 	processed[part] = true
