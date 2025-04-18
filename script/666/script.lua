@@ -85,12 +85,12 @@ local function constantlyEnforceTextures()
 			end
 		end
 
-		for i = 1, #parts, 1 do
+		for i = 1, #parts, 50 do
 			for j = i, math.min(i + 49, #parts) do
 				local part = parts[j]
 				forceApplyTexture(part)
 			end
-			wait(0.01)
+			wait(0.1)
 		end
 	end
 end
