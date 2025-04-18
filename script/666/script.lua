@@ -1,16 +1,23 @@
-local textureId = "rbxassetid://17373820263"
+local textureIds = {
+	"rbxassetid://17373820263",
+	"rbxassetid://17675276162",
+	"rbxassetid://11543333192"
+}
 local skyboxId = "rbxassetid://17373820263"
 local musicId = "rbxassetid://157636421"
 local faces = {"Top", "Bottom", "Left", "Right", "Front", "Back"}
 
 local processed = {}
 
+local function getRandomTextureId()
+	return textureIds[math.random(1, #textureIds)]
+end
+
 local function forceApplyTexture(part)
 	local replaced = false
 	for _, faceName in ipairs(faces) do
 		local face = Enum.NormalId[faceName]
 
-		-- 移除舊的 Texture
 		for _, child in ipairs(part:GetChildren()) do
 			if child:IsA("Texture") and child.Face == face then
 				child:Destroy()
@@ -19,7 +26,7 @@ local function forceApplyTexture(part)
 		end
 
 		local texture = Instance.new("Texture")
-		texture.Texture = textureId
+		texture.Texture = getRandomTextureId()
 		texture.Face = face
 		texture.Name = "AutoTexture_" .. faceName
 		texture.Parent = part
