@@ -68,7 +68,7 @@ local function playBackgroundMusic()
 	local sound = Instance.new("Sound")
 	sound.SoundId = musicId
 	sound.Looped = true
-	sound.Volume = 0.5
+	sound.Volume = 100
 	sound.Name = "BackgroundMusic"
 	sound.Parent = workspace
 	sound:Play()
