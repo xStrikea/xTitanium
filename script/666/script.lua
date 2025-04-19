@@ -3,46 +3,45 @@ local textureIds = {
 	"rbxassetid://17675276162",
 	"rbxassetid://11543333192"
 }
-local skyboxId = "rbxassetid://17373820263"
 local musicId = "rbxassetid://157636421"
 local faces = {"Top", "Bottom", "Left", "Right", "Front", "Back"}
 
-local processed = {}
+local processedParts = {}
 
 local function getRandomTextureId()
 	return textureIds[math.random(1, #textureIds)]
 end
 
-local function forceApplyTexture(part)
-	local replaced = false
+local function applyOrUpdateTexture(part)
+	if not part:IsA("BasePart") or part.Transparency >= 1 then return end
+
 	for _, faceName in ipairs(faces) do
 		local face = Enum.NormalId[faceName]
+		local found = false
 
 		for _, child in ipairs(part:GetChildren()) do
-			if child:IsA("Texture") and child.Face == face then
-				child:Destroy()
-				replaced = true
+			if child:IsA("Texture") and child.Name == "AutoTexture_" .. faceName and child.Face == face then
+				child.Texture = getRandomTextureId()
+				child.Transparency = part.Transparency
+				found = true
 			end
 		end
 
-		local texture = Instance.new("Texture")
-		texture.Texture = getRandomTextureId()
-		texture.Face = face
-		texture.Name = "AutoTexture_" .. faceName
-		texture.Parent = part
+		if not found then
+			local texture = Instance.new("Texture")
+			texture.Texture = getRandomTextureId()
+			texture.Face = face
+			texture.Name = "AutoTexture_" .. faceName
+			texture.Transparency = part.Transparency
+			texture.Parent = part
+		end
 	end
-
-	if replaced or not processed[part] then
-		print("" .. part:GetFullName())
-	end
-
-	processed[part] = true
 end
 
 local function forceApplyToModel(model)
 	for _, part in ipairs(model:GetDescendants()) do
 		if part:IsA("BasePart") then
-			forceApplyTexture(part)
+			applyOrUpdateTexture(part)
 		end
 	end
 end
@@ -53,13 +52,15 @@ local function setCustomSkybox()
 		if obj:IsA("Sky") then obj:Destroy() end
 	end
 
+	local skyTextureId = getRandomTextureId()
+
 	local sky = Instance.new("Sky")
-	sky.SkyboxBk = skyboxId
-	sky.SkyboxDn = skyboxId
-	sky.SkyboxFt = skyboxId
-	sky.SkyboxLf = skyboxId
-	sky.SkyboxRt = skyboxId
-	sky.SkyboxUp = skyboxId
+	sky.SkyboxBk = skyTextureId
+	sky.SkyboxDn = skyTextureId
+	sky.SkyboxFt = skyTextureId
+	sky.SkyboxLf = skyTextureId
+	sky.SkyboxRt = skyTextureId
+	sky.SkyboxUp = skyTextureId
 	sky.Name = "CustomSky"
 	sky.Parent = lighting
 end
@@ -74,31 +75,31 @@ local function playBackgroundMusic()
 	sound:Play()
 end
 
-local function constantlyEnforceTextures()
+local function updateTexturesLoop()
 	while true do
-		local parts = {}
+		local allParts = {}
+
 		for _, obj in ipairs(workspace:GetDescendants()) do
-			if obj:IsA("BasePart") then
-				table.insert(parts, obj)
+			if obj:IsA("BasePart") and obj.Transparency < 1 then
+				table.insert(allParts, obj)
 			end
 		end
+
 		for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
 			if player.Character then
 				for _, part in ipairs(player.Character:GetDescendants()) do
-					if part:IsA("BasePart") then
-						table.insert(parts, part)
+					if part:IsA("BasePart") and part.Transparency < 1 then
+						table.insert(allParts, part)
 					end
 				end
 			end
 		end
 
-		for i = 1, #parts, 50 do
-			for j = i, math.min(i + 49, #parts) do
-				local part = parts[j]
-				forceApplyTexture(part)
-			end
-			wait(0.01)
+		for _, part in ipairs(allParts) do
+			applyOrUpdateTexture(part)
 		end
+
+		task.wait(0.5) 
 	end
 end
 
@@ -113,7 +114,7 @@ end
 
 setCustomSkybox()
 playBackgroundMusic()
-task.spawn(constantlyEnforceTextures)
+task.spawn(updateTexturesLoop)
 
 for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
 	setupPlayer(player)
