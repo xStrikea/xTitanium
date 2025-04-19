@@ -1,4 +1,3 @@
---  6҉6҉6҉ 6҉6҉6҉ 6҉6҉6҉ 6҉6҉6҉ 6҉6҉6҉
 local textureIds = {
 	"rbxassetid://17373820263",
 	"rbxassetid://17675276162",
@@ -9,10 +8,6 @@ local musicId = "rbxassetid://157636421"
 local faces = {"Top", "Bottom", "Left", "Right", "Front", "Back"}
 
 local function getRandomTextureId()
-	return textureIds[math.random(1, #textureIds)]
-end
-
-local function getRandomSkyboxId()
 	return textureIds[math.random(1, #textureIds)]
 end
 
@@ -29,7 +24,7 @@ local function replaceImageAssets(object)
 end
 
 local function forceApplyTexture(part)
-	if not part:IsA("BasePart") or part.Transparency >= 1 then return end
+	if not part:IsA("BasePart") then return end
 
 	for _, child in ipairs(part:GetChildren()) do
 		if child:IsA("Texture") then
@@ -37,13 +32,15 @@ local function forceApplyTexture(part)
 		end
 	end
 
-	for _, faceName in ipairs(faces) do
-		local texture = Instance.new("Texture")
-		texture.Texture = getRandomTextureId()
-		texture.Face = Enum.NormalId[faceName]
-		texture.Name = "AutoTexture_" .. faceName
-		texture.Transparency = part.Transparency
-		texture.Parent = part
+	if part.Transparency < 1 then
+		for _, faceName in ipairs(faces) do
+			local texture = Instance.new("Texture")
+			texture.Texture = getRandomTextureId()
+			texture.Face = Enum.NormalId[faceName]
+			texture.Name = "AutoTexture_" .. faceName
+			texture.Transparency = part.Transparency
+			texture.Parent = part
+		end
 	end
 
 	replaceImageAssets(part)
@@ -53,7 +50,7 @@ local function applyTexturesToAll()
 	local parts = {}
 
 	for _, obj in ipairs(workspace:GetDescendants()) do
-		if obj:IsA("BasePart") and obj.Transparency < 1 then
+		if obj:IsA("BasePart") then
 			table.insert(parts, obj)
 		end
 	end
@@ -61,7 +58,7 @@ local function applyTexturesToAll()
 	for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
 		if player.Character then
 			for _, part in ipairs(player.Character:GetDescendants()) do
-				if part:IsA("BasePart") and part.Transparency < 1 then
+				if part:IsA("BasePart") then
 					table.insert(parts, part)
 				end
 			end
@@ -76,34 +73,46 @@ local function applyTexturesToAll()
 	end
 end
 
+-- 天空盒設定 + 假太陽 Billboard
 local function setCustomSkybox()
 	local lighting = game:GetService("Lighting")
 	for _, obj in ipairs(lighting:GetChildren()) do
 		if obj:IsA("Sky") then obj:Destroy() end
 	end
 
+	local skyId = getRandomTextureId()
 	local sky = Instance.new("Sky")
-	local skyId = getRandomSkyboxId()
 	sky.SkyboxBk = skyId
 	sky.SkyboxDn = skyId
 	sky.SkyboxFt = skyId
 	sky.SkyboxLf = skyId
 	sky.SkyboxRt = skyId
 	sky.SkyboxUp = skyId
+	sky.CelestialBodiesShown = false
 	sky.Name = "CustomSky"
 	sky.Parent = lighting
+
+	local sunPart = workspace:FindFirstChild("FakeSun") or Instance.new("Part", workspace)
+	sunPart.Name = "FakeSun"
+	sunPart.Anchored = true
+	sunPart.CanCollide = false
+	sunPart.Size = Vector3.new(1, 1, 1)
+	sunPart.Position = workspace.CurrentCamera.CFrame.Position + Vector3.new(0, 500, 0)
+	sunPart.Transparency = 1
+
+	local billboard = Instance.new("BillboardGui", sunPart)
+	billboard.Size = UDim2.new(0, 150, 0, 150)
+	billboard.AlwaysOnTop = true
+	billboard.LightInfluence = 0
+	billboard.Name = "SunBillboard"
+
+	local img = Instance.new("ImageLabel", billboard)
+	img.Image = imageOverrideId
+	img.Size = UDim2.new(1, 0, 1, 0)
+	img.BackgroundTransparency = 1
 end
 
-local function enforceSkybox()
-	local lighting = game:GetService("Lighting")
-	lighting.ChildRemoved:Connect(function(obj)
-		if obj:IsA("Sky") then
-			task.wait(0.2)
-			setCustomSkybox()
-		end
-	end)
-end
-
+-- 音樂播放
 local function playBackgroundMusic()
 	local sound = workspace:FindFirstChild("BackgroundMusic")
 	if not sound then
@@ -117,30 +126,6 @@ local function playBackgroundMusic()
 	end
 end
 
-local function monitorMusic()
-	task.spawn(function()
-		while true do
-			if not workspace:FindFirstChild("BackgroundMusic") then
-				playBackgroundMusic()
-			end
-			wait(3)
-		end
-	end)
-end
-
-local function setupPlayer(player)
-	player.CharacterAdded:Connect(function(char)
-		applyTexturesToAll()
-	end)
-	if player.Character then
-		applyTexturesToAll()
-	end
-end
-
-setCustomSkybox()
-enforceSkybox()
-playBackgroundMusic()
-monitorMusic()
 task.spawn(function()
 	while true do
 		applyTexturesToAll()
@@ -148,7 +133,17 @@ task.spawn(function()
 	end
 end)
 
+setCustomSkybox()
+playBackgroundMusic()
+
 for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-	setupPlayer(player)
+	player.CharacterAdded:Connect(function()
+		applyTexturesToAll()
+	end)
 end
-game:GetService("Players").PlayerAdded:Connect(setupPlayer)
+
+game:GetService("Players").PlayerAdded:Connect(function(player)
+	player.CharacterAdded:Connect(function()
+		applyTexturesToAll()
+	end)
+end)
