@@ -6,7 +6,12 @@ local textureIds = {
 local musicId = "rbxassetid://157636421"
 local faces = {"Top", "Bottom", "Left", "Right", "Front", "Back"}
 
-local processedParts = {}
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+
+local allParts = {}
+local partIndex = 1
 
 local function getRandomTextureId()
 	return textureIds[math.random(1, #textureIds)]
@@ -38,17 +43,44 @@ local function applyOrUpdateTexture(part)
 	end
 end
 
-local function forceApplyToModel(model)
-	for _, part in ipairs(model:GetDescendants()) do
-		if part:IsA("BasePart") then
-			applyOrUpdateTexture(part)
+local function refreshAllParts()
+	allParts = {}
+
+	for _, obj in ipairs(workspace:GetDescendants()) do
+		if obj:IsA("BasePart") and obj.Transparency < 1 then
+			table.insert(allParts, obj)
+		end
+	end
+
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player.Character then
+			for _, part in ipairs(player.Character:GetDescendants()) do
+				if part:IsA("BasePart") and part.Transparency < 1 then
+					table.insert(allParts, part)
+				end
+			end
 		end
 	end
 end
 
+local function gradualTextureUpdater()
+	RunService.Heartbeat:Connect(function()
+		if #allParts == 0 then return end
+
+		local part = allParts[partIndex]
+		if part and part:IsA("BasePart") and part.Transparency < 1 then
+			applyOrUpdateTexture(part)
+		end
+
+		partIndex = partIndex + 1
+		if partIndex > #allParts then
+			partIndex = 1
+		end
+	end)
+end
+
 local function setCustomSkybox()
-	local lighting = game:GetService("Lighting")
-	for _, obj in ipairs(lighting:GetChildren()) do
+	for _, obj in ipairs(Lighting:GetChildren()) do
 		if obj:IsA("Sky") then obj:Destroy() end
 	end
 
@@ -62,7 +94,7 @@ local function setCustomSkybox()
 	sky.SkyboxRt = skyTextureId
 	sky.SkyboxUp = skyTextureId
 	sky.Name = "CustomSky"
-	sky.Parent = lighting
+	sky.Parent = Lighting
 end
 
 local function playBackgroundMusic()
@@ -75,49 +107,26 @@ local function playBackgroundMusic()
 	sound:Play()
 end
 
-local function updateTexturesLoop()
-	while true do
-		local allParts = {}
-
-		for _, obj in ipairs(workspace:GetDescendants()) do
-			if obj:IsA("BasePart") and obj.Transparency < 1 then
-				table.insert(allParts, obj)
-			end
-		end
-
-		for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-			if player.Character then
-				for _, part in ipairs(player.Character:GetDescendants()) do
-					if part:IsA("BasePart") and part.Transparency < 1 then
-						table.insert(allParts, part)
-					end
-				end
-			end
-		end
-
-		for _, part in ipairs(allParts) do
-			applyOrUpdateTexture(part)
-		end
-
-		task.wait(0.5) 
-	end
-end
-
 local function setupPlayer(player)
 	player.CharacterAdded:Connect(function(char)
-		forceApplyToModel(char)
+		task.wait(1)
+		refreshAllParts()
 	end)
 	if player.Character then
-		forceApplyToModel(player.Character)
+		refreshAllParts()
 	end
 end
 
 setCustomSkybox()
 playBackgroundMusic()
-task.spawn(updateTexturesLoop)
+gradualTextureUpdater()
 
-for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+for _, player in ipairs(Players:GetPlayers()) do
 	setupPlayer(player)
 end
+Players.PlayerAdded:Connect(setupPlayer)
 
-game:GetService("Players").PlayerAdded:Connect(setupPlayer)
+while true do
+	refreshAllParts()
+	task.wait(3)
+end
