@@ -8,8 +8,8 @@
 ---
 
 # Recognized Discord Group Owner
-Group owner name:xTitanium
-[join](http://xSpecter.ct.ws)
+Group owner name: xTitanium  
+[join](http://xSpecter.ct.ws)  
 
 ---
 
