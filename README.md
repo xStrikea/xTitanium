@@ -7,6 +7,12 @@
 
 ---
 
+# Recognized Discord Group Owner
+Group owner name:xTitanium
+[join](http://xSpecter.ct.ws)
+
+---
+
 # How to get the script
 Method 1:  
 In our [script](/script) folder you can find many scripts, you can copy or download them, but you can not edit or change them, if you edit them you will be violating the [MIT license](/LICENSE).  
