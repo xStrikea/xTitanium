@@ -1,3 +1,4 @@
+-- https://raw.githubusercontent.com/xStrikea/xTitanium/refs/heads/main/script/super_ring/script.lua
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -136,7 +137,7 @@ ToggleButton.Position = UDim2.new(0.1, 0, 0.3, 0)
 ToggleButton.Text = "Off"
 ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Red
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White
-ToggleButton.Font = Enum.Font.Fondamento
+ToggleButton.Font = Enum.Font.code
 ToggleButton.TextSize = 15
 ToggleButton.Parent = MainFrame
 
@@ -151,7 +152,7 @@ DecreaseRadius.Position = UDim2.new(0.1, 0, 0.6, 0)
 DecreaseRadius.Text = "<"
 DecreaseRadius.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Yellow
 DecreaseRadius.TextColor3 = Color3.fromRGB(255, 255, 255) -- White
-DecreaseRadius.Font = Enum.Font.Fondamento
+DecreaseRadius.Font = Enum.Font.code
 DecreaseRadius.TextSize = 18
 DecreaseRadius.Parent = MainFrame
 
@@ -166,7 +167,7 @@ IncreaseRadius.Position = UDim2.new(0.7, 0, 0.6, 0)
 IncreaseRadius.Text = ">"
 IncreaseRadius.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Yellow
 IncreaseRadius.TextColor3 = Color3.fromRGB(255, 255, 255) -- White
-IncreaseRadius.Font = Enum.Font.Fondamento
+IncreaseRadius.Font = Enum.Font.code
 IncreaseRadius.TextSize = 18
 IncreaseRadius.Parent = MainFrame
 
@@ -196,7 +197,7 @@ Watermark.Position = UDim2.new(0, 0, 1, -20)
 Watermark.Text = "super ring v5 by xSpecter"
 Watermark.TextColor3 = Color3.fromRGB(0, 0, 0) -- Dark brown
 Watermark.BackgroundTransparency = 1
-Watermark.Font = Enum.Font.Fondamento
+Watermark.Font = Enum.Font.code
 Watermark.TextSize = 14
 Watermark.Parent = MainFrame
 
@@ -207,7 +208,7 @@ MinimizeButton.Position = UDim2.new(1, -35, 0, 5)
 MinimizeButton.Text = "-"
 MinimizeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Green
 MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White
-MinimizeButton.Font = Enum.Font.Fondamento
+MinimizeButton.Font = Enum.Font.code
 MinimizeButton.TextSize = 15
 MinimizeButton.Parent = MainFrame
 
