@@ -1,4 +1,3 @@
--- https://raw.githubusercontent.com/xStrikea/xTitanium/refs/heads/main/script/super_ring/script.lua
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -395,7 +394,6 @@ RadiusDisplay.Text = "Radius: " .. radius
 playSound("12221967")
 end)
 
--- Get player thumbnail
 local userId = Players:GetUserIdFromNameAsync("classicbloxer2")
 local thumbType = Enum.ThumbnailType.HeadShot
 local thumbSize = Enum.ThumbnailSize.Size420x420
@@ -405,7 +403,7 @@ StarterGui:SetCore("SendNotification", {
 Title = "Super ring parts V4",
 Text = "enjoy",
 Icon = content,
-Duration = 5
+Duration = 4
 })
 
 StarterGui:SetCore("SendNotification", {
@@ -419,10 +417,9 @@ StarterGui:SetCore("SendNotification", {
 Title = "Credits",
 Text = "Original work: lukas",
 Icon = content,
-Duration = 5
+Duration = 6
 })
 
--- Chat message (Updated for new chat system)
 local function SendChatMessage(message)
 if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
 local textChannel = TextChatService.TextChannels.RBXGeneral
