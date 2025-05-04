@@ -1,4 +1,4 @@
-![logo](https://github.com/user-attachments/assets/ed930132-e36f-4710-939f-1986e2f35875)
+![logo](image/gif_logo.gif)
 
 
 # xTitanium
