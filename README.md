@@ -9,7 +9,7 @@
 
 # Recognized Discord Group Owner
 Group owner name: xTitanium  
-[join](http://xSpecter.ct.ws)  
+[join](https://xstrikea.github.io/xSlinux/)  
 
 ---
 
