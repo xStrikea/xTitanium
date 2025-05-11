@@ -5,6 +5,7 @@
 | ------- | ------------------ |
 | 0.0.1-alpha   | ✓ |
 | 0.0.1-a1      | ✓ |
+| 0.0.1         | ✓ |
 
 ### Speech Rules
 1.Sexually explicit language is strictly prohibited.  
