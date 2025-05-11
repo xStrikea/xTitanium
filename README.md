@@ -1,6 +1,6 @@
 ![logo](image/gif_logo.gif)
-![Discord](https://img.shields.io/badge/Discord-Join-blue?logo=discord&link=https://discord.gg/GHtYPSk7KH)
-![Info](https://img.shields.io/badge/info-check-blue?logo=info&link=https://github.com/xStrikea/xTitanium/blob/main/INFO.md)
+[![Discord](https://img.shields.io/badge/Discord-Join-blue?logo=discord)](https://discord.gg/GHtYPSk7KH)
+[![info](https://img.shields.io/badge/info-check-blue?logo=info)](https://github.com/xStrikea/xTitanium/blob/main/INFO.md)
 # xTitanium
 
 **xTitanium** This is a [Lua script](https://en.m.wikipedia.org/wiki/Lua) placement that supports [Roblox](https://en.m.wikipedia.org/wiki/Roblox) only. Every script is uploaded to [scriptblox](https://scriptblox.com) for everyone to use freely.
