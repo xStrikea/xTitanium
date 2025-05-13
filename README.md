@@ -13,7 +13,8 @@ In our [script](/script) folder you can find many scripts, you can copy or downl
   
 Method 2:  
 Find my account on [scriptblox](https://scriptblox.com/u/Tektronix). There are many scripts in it. You can copy them, but you cannot change or edit them, otherwise you will violate the [MIT license](/LICENSE) as in method 1.  
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=1000&color=F70000&center=true&vCenter=true&multiline=true&repeat=false&width=435&height=70&lines=Violation+of+the+MIT+License%2C;It's+not+our+responsibility.)](/LICENSE)
+> ⚠️ **Warning**   
+> Violating the MIT license is not something we should bear.
 
 ---
 
