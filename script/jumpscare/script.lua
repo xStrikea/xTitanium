@@ -22,7 +22,7 @@ videoFrame.Looped = true
 videoFrame.Volume = 1
 videoFrame.Parent = screenGui
 
-local videoUrl = ""
+local videoUrl = "https://github.com/xStrikea/xTitanium/blob/main/patch/jumpscare/jumpscare.mp4?raw=true"
 writefile("video.mp4", game:HttpGet(videoUrl))
 
 videoFrame.Video = getcustomasset("video.mp4")
