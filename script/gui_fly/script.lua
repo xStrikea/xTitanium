@@ -137,7 +137,7 @@ nowe = false
 
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "GUI FLY";
-	Text = "BY xSpecter(github)";
+	Text = "BY xSpecter(github name)";
 	Icon = "rbxthumb://type=Asset&id=101798189718681&w=150&h=150"})
 Duration = 5;
 
