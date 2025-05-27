@@ -4,13 +4,20 @@ local FileAPI = {}
 FileAPI.baseURL = "https://api.github.com/repos/xStrikea/xTitanium/contents/script"
 FileAPI._cache = {}
 FileAPI._env = nil
+FileAPI.debug = false
+
+local function log(message)
+    if FileAPI.debug then
+        warn("[FileAPI Debug]: " .. message)
+    end
+end
 
 local function loadEnv()
     local envVariables = {}
-    local envFile = io.open("../.env", "r")
+    local envFile, err = io.open("../.env", "r")
 
     if not envFile then
-        warn("[FileAPI]:.env error")
+        warn("[FileAPI]: Failed to load .env - " .. tostring(err))
         return nil
     end
 
@@ -31,7 +38,8 @@ end
 
 function FileAPI.reloadEnv()
     FileAPI._env = loadEnv()
-    FileAPI._cache = {} 
+    FileAPI._cache = {} -- 清除快取
+    log("Environment reloaded.")
 end
 
 local function hasValidExtension(filename, extensions)
@@ -44,7 +52,6 @@ local function hasValidExtension(filename, extensions)
     return false
 end
 
--- 遞迴列出 GitHub 內容
 function FileAPI.listContents(folderURL, recursive, extensions, filesOnly, maxDepth, currentDepth, useCache)
     folderURL = folderURL or FileAPI.baseURL
     recursive = recursive ~= false
@@ -53,11 +60,19 @@ function FileAPI.listContents(folderURL, recursive, extensions, filesOnly, maxDe
     currentDepth = currentDepth or 1
     useCache = useCache ~= false
 
+    if currentDepth > maxDepth then
+        warn("[FileAPI]: Max depth exceeded.")
+        return {}
+    end
+
     if useCache and FileAPI._cache[folderURL] then
+        log("Using cached contents for: " .. folderURL)
         return FileAPI._cache[folderURL]
     end
 
-    local headers = {}
+    local headers = {
+        ["User-Agent"] = "Roblox-FileAPI"
+    }
     local token = getToken()
     if token then
         headers["Authorization"] = "token " .. token
@@ -68,11 +83,19 @@ function FileAPI.listContents(folderURL, recursive, extensions, filesOnly, maxDe
     end)
 
     if not success then
-        warn("[FileAPI]:error " .. result)
+        warn("[FileAPI]: Request failed - " .. tostring(result))
         return nil
     end
 
-    local contents = HttpService:JSONDecode(result)
+    local contents
+    pcall(function()
+        contents = HttpService:JSONDecode(result)
+    end)
+    if not contents then
+        warn("[FileAPI]: Failed to parse JSON from: " .. folderURL)
+        return nil
+    end
+
     local items = {}
 
     for _, item in ipairs(contents) do
@@ -85,7 +108,7 @@ function FileAPI.listContents(folderURL, recursive, extensions, filesOnly, maxDe
                 type = "file",
                 url = item.download_url,
             })
-        elseif isDir and recursive and currentDepth < maxDepth then
+        elseif isDir and recursive then
             local subItems = FileAPI.listContents(item.url, recursive, extensions, filesOnly, maxDepth, currentDepth + 1, useCache)
             if subItems then
                 for _, subItem in ipairs(subItems) do
@@ -112,10 +135,13 @@ function FileAPI.getFile(url, useCache)
     useCache = useCache ~= false
 
     if useCache and FileAPI._cache[url] then
+        log("Using cached file: " .. url)
         return FileAPI._cache[url]
     end
 
-    local headers = {}
+    local headers = {
+        ["User-Agent"] = "Roblox-FileAPI"
+    }
     local token = getToken()
     if token then
         headers["Authorization"] = "token " .. token
@@ -126,7 +152,7 @@ function FileAPI.getFile(url, useCache)
     end)
 
     if not success then
-        warn("[FileAPI]:error" .. result)
+        warn("[FileAPI]: Failed to get file - " .. tostring(result))
         return nil
     end
 
